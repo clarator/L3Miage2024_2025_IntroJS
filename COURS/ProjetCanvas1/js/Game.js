@@ -69,6 +69,7 @@ export default class Game {
         requestAnimationFrame(this.mainAnimationLoop.bind(this));
     }
 
+    
     x = 100;
     mainAnimationLoop() {
         // 1 - on efface le canvas
@@ -157,18 +158,43 @@ export default class Game {
         // dans cette fonction seront par rapport à ce repère
         // translaté
         this.ctx.translate(x, y);
-        //this.ctx.rotate(0.3);
-        //this.ctx.scale(0.5, 0.5);
+        this.ctx.rotate(0.3);
+        this.ctx.scale(0.5, 0.5);
 
+        
         // tete du monstre
-        this.ctx.fillStyle = "pink";
+        this.ctx.fillStyle = "papayaWhip";
         this.ctx.fillRect(0, 0, 100, 100);
+    
         // yeux
-        this.drawCircleImmediat(20, 20, 10, "red");
-        this.drawCircleImmediat(60, 20, 10, "red");
+        this.drawCircleImmediat(30, 40, 10, "DeepSkyBlue");
+        this.drawCircleImmediat(70, 40, 10, "DeepSkyBlue");
 
-        // Les bras
-        this.drawBrasGauche();
+
+        //cheveux
+        this.ctx.fillStyle = "yellow";
+        this.ctx.fillRect(0, -30, 100, 30);
+        this.ctx.fillRect(10, -30, -30, 150);
+        this.ctx.fillRect(90, -30, 30, 150);
+
+
+        
+        // Bouche
+        this.ctx.fillStyle = "red";
+        this.ctx.beginPath();
+        this.ctx.arc(50, 60, 10, 0, Math.PI, false); // Demi-cercle pour la bouche
+        this.ctx.fill();
+
+      
+        // Couronne
+        this.drawTriangle(this.ctx, 0, -30, 50, -100, 100, -30,"gold");
+        this.drawTriangle(this.ctx, 30, 60, 40, 60, 35, 60);
+        this.drawTriangle(this.ctx, 45, 60, 55, 60, 50, 60);
+        this.drawTriangle(this.ctx, 60, 60, 70, 60, 65, 60);
+
+        // Robe
+        this.drawTriangle(this.ctx, 0, -150, 50, -150, 100, -30,"pink");
+
 
         // restore
         this.ctx.restore();
@@ -199,6 +225,18 @@ export default class Game {
         this.ctx.fillRect(0, 0, 50, 10);
 
         this.ctx.restore();
+    }
+
+    drawTriangle(ctx, x1, y1, x2, y2, x3, y3, color) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x3, y3);
+        ctx.closePath();
+        ctx.fillStyle = color; // Couleur de remplissage du triangle
+        ctx.fill();
+        ctx.strokeStyle = color; // Couleur du contour du triangle
+        ctx.stroke();
     }
 
 }
