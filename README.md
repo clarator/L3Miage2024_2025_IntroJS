@@ -6,9 +6,9 @@
 - Monstre
 
 # But du jeu
-Réussir à passer les 3 niveaux (facile, moyen, difficile)
-Trois chances sont laissées au joueur !!!
-Si les trois sont utilisés, le joueur revient au point de départ...
+- Réussir à passer les 3 niveaux (facile, moyen, difficile)
+- Trois chances sont laissées au joueur !!!
+- Si les trois sont utilisés, le joueur revient au point de départ...
 
 # Langage
 - JavaScript
