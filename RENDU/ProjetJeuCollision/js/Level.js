@@ -1,49 +1,61 @@
 import Obstacle from "./Obstacle.js";
 import Sortie from "./Sortie.js";
+import {generateObstaclesAnime } from "./obstacle_level.js";
 
-//class pour gerer les différents niveaux
+//class pour gerer les niveau
 export default class Level {
     constructor() {
-        this.currentLevelIndex  = 0;
-        this.maxLevels = 10;
+        //initiale le niveau à 1
+        this.currentLevelIndex = 0;
+        //intialise les nombre de niveaux 
+        this.maxLevels = 3;
     }
 
-    //fonction pour générer un niveau 
+   //fonction pour générer un niveau 
     generateLevel(levelIndex) {
-        let numObstacles = Math.max(1, levelIndex * 2);
-        let obstacles = [];
-
-        //
-        let obstacle1 = new Obstacle(250, 0, 30, 600, "red");
-        obstacles.push(obstacle1);
-        
-        let obstacle2 = new Obstacle(500, 150, 30, 700, "blue" );
-        obstacles.push(obstacle2);
-
-        //
+        //position du joueur
         let playerStart = { x: 50, y: 50 };
 
-        let sortieX = 600 + levelIndex * 10;
-        let sortieY = 300 + (levelIndex % 2) * 50; 
-        let sortie = new Sortie(sortieX, sortieY, 50, 50);
+        //liste d'obstacles
+        let obstacles = [];
 
+        //obstacle 
+        let obstacle1 = new Obstacle(0, 200, 500, 30, "DarkSlateGray");
+        let obstacle2 = new Obstacle(300, 400, 500, 30, "DarkSlateGray");
+        let obstacle3 = new Obstacle(0, 600, 500, 30, "DarkSlateGray");
+        obstacles.push(obstacle1, obstacle2, obstacle3);
+
+        //obstacle anime
+        let obstacleAnimes1 = generateObstaclesAnime(obstacle1, obstacle2, levelIndex,50);
+        let obstacleAnimes2 = generateObstaclesAnime(obstacle2, obstacle3, levelIndex,-250);
+            
+        obstacles.push(...obstacleAnimes1,...obstacleAnimes2);
+
+        //initialise la sortie en dessous de l'obstacle 3
+        let sortieX = obstacle3.x + obstacle3.w / 2 - 25; 
+        let sortieY = obstacle3.y + obstacle3.h + 10; 
+        let sortie = new Sortie(sortieX, sortieY, 50, 50, "FireBrick");
         return { playerStart, obstacles, sortie };
     }
-
-    //gère le passage des niveaux
+    
+    //gere passage des niveaux
     loadLevel() {
+        //si niveau final atteint affiche une alerte
         if (this.currentLevelIndex >= this.maxLevels) {
-            console.log("BRAVOO VOUS AVEZ REUSSI !");
-            return null;
+            alert("BRAVO ! Vous avez réussi !");
+            //reintialise au niveau 1
+            this.currentLevelIndex = 0;
+            return this.generateLevel(this.currentLevelIndex);
         }
 
-        console.log(`Nouveau niveau debloqué  ${this.currentLevelIndex + 1}`);
+        //affiche le niveaux suivant
+        console.log(`Nouveau niveau débloqué ${this.currentLevelIndex + 1}`);
         return this.generateLevel(this.currentLevelIndex);
     }
 
-    //passe les niveaux entre eux
+    //passe au niveau suivant
     nextLevel() {
         this.currentLevelIndex++;
         return this.loadLevel();
-    }
+    }   
 }

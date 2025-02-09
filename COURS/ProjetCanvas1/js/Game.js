@@ -48,8 +48,6 @@ export default class Game {
         requestAnimationFrame(this.mainAnimationLoop.bind(this));
     }
 
-    
-    x = 100;
     mainAnimationLoop() {
         // 1 - on efface le canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -157,145 +155,22 @@ export default class Game {
                 if(rectsOverlap(this.player.x-this.player.w/2, this.player.y - this.player.h/2, this.player.w, this.player.h, obj.x, obj.y, obj.w, obj.h)) {
                     // collision
 
-        // AUTRE BONNE PRATIQUE : on dessine toujours
-        // en 0, 0 !!!! et on utilise les transformations
-        // géométriques pour placer le dessin, le tourner, le rescaler
-        // etc.
-        this.ctx.fillStyle = color;
-        this.ctx.beginPath();
-
-        // on translate le systeme de coordonnées pour placer le cercle
-        // en x, y
-        this.ctx.translate(x, y);     
-        this.ctx.arc(0, 0, r, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // on restore le contexte à la fin
-        this.ctx.restore();
-    }
-
-    drawGrid(nbLignes, nbColonnes, couleur, largeurLignes) {
-        // dessine une grille de lignes verticales et horizontales
-        // de couleur couleur
-        this.ctx.save();
-
-        this.ctx.strokeStyle = couleur;
-        this.ctx.lineWidth = largeurLignes;
-
-        let largeurColonnes = this.canvas.width / nbColonnes;
-        let hauteurLignes = this.canvas.height / nbLignes;
-
-        this.ctx.beginPath();
-
-        // on dessine les lignes verticales
-        for (let i = 1; i < nbColonnes; i++) {
-            this.ctx.moveTo(i * largeurColonnes, 0);
-            this.ctx.lineTo(i * largeurColonnes, this.canvas.height);
-        }
-
-        // on dessine les lignes horizontales
-        for (let i = 1; i < nbLignes; i++) {
-            this.ctx.moveTo(0, i * hauteurLignes);
-            this.ctx.lineTo(this.canvas.width, i * hauteurLignes);
-        }
-
-        // gpu call pour dessiner d'un coup toutes les lignes
-        this.ctx.stroke();
-
-        this.ctx.restore();
-    }
-
-    drawMonstre(x, y) {
-        // Ici on dessine un monstre
-        this.ctx.save();
-
-        // on déplace le systeme de coordonnées pour placer
-        // le monstre en x, y.Tous les ordres de dessin
-        // dans cette fonction seront par rapport à ce repère
-        // translaté
-        this.ctx.translate(x, y);
-        this.ctx.rotate(0.3);
-        this.ctx.scale(0.5, 0.5);
-
-        
-        // tete du monstre
-        this.ctx.fillStyle = "papayaWhip";
-        this.ctx.fillRect(0, 0, 100, 100);
-    
-        // yeux
-        this.drawCircleImmediat(30, 40, 10, "DeepSkyBlue");
-        this.drawCircleImmediat(70, 40, 10, "DeepSkyBlue");
-
-
-        //cheveux
-        this.ctx.fillStyle = "yellow";
-        this.ctx.fillRect(0, -30, 100, 30);
-        this.ctx.fillRect(10, -30, -30, 150);
-        this.ctx.fillRect(90, -30, 30, 150);
-
-
-        
-        // Bouche
-        this.ctx.fillStyle = "red";
-        this.ctx.beginPath();
-        this.ctx.arc(50, 60, 10, 0, Math.PI, false); // Demi-cercle pour la bouche
-        this.ctx.fill();
-
-      
-        // Couronne
-        this.drawTriangle(this.ctx, 0, -30, 50, -100, 100, -30,"gold");
-        this.drawTriangle(this.ctx, 30, 60, 40, 60, 35, 60);
-        this.drawTriangle(this.ctx, 45, 60, 55, 60, 50, 60);
-        this.drawTriangle(this.ctx, 60, 60, 70, 60, 65, 60);
-
-        // Robe
-        this.drawTriangle(this.ctx, 0, -150, 50, -150, 100, -30,"pink");
-
-
-        // restore
-        this.ctx.restore();
-    }
-
-    drawBrasGauche() {
-        this.ctx.save();
-
-        this.ctx.translate(-50, 50);
-        //this.ctx.rotate(0.7);
-
-        // on dessine le bras gauche
-        this.ctx.fillStyle = "purple";
-        this.ctx.fillRect(-50, 0, 50, 10);
-
-        // on dessine l'avant bras gauche
-       this.drawAvantBrasGauche();
-
-        this.ctx.restore();
-    }
-
-    drawAvantBrasGauche() {
-        this.ctx.save();
-
-    this.ctx.translate(0, 0);
-
-        this.ctx.fillStyle = "blue";
-        this.ctx.fillRect(0, 0, 50, 10);
-
-        this.ctx.restore();
-    }
-
-    drawTriangle(ctx, x1, y1, x2, y2, x3, y3, color) {
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x3, y3);
-        ctx.closePath();
-        ctx.fillStyle = color; // Couleur de remplissage du triangle
-        ctx.fill();
-        ctx.strokeStyle = color; // Couleur du contour du triangle
-        ctx.stroke();
-    }
-
+                    // ICI TEST BASIQUE QUI ARRETE LE JOUEUR EN CAS DE COLLIION.
+                    // SI ON VOULAIT FAIRE MIEUX, ON POURRAIT PAR EXEMPLE REGARDER OU EST LE JOUEUR
+                    // PAR RAPPORT A L'obstacle courant : il est à droite si son x est plus grand que le x de l'obstacle + la largeur de l'obstacle
+                    // il est à gauche si son x + sa largeur est plus petit que le x de l'obstacle
+                    // etc.
+                    // Dans ce cas on pourrait savoir comment le joueur est entré en collision avec l'obstacle et réagir en conséquence
+                    // par exemple en le repoussant dans la direction opposée à celle de l'obstacle...
+                    // Là par défaut on le renvoie en x=10 y=10 et on l'arrête
+                    console.log("Collision avec obstacle");
+                    this.player.x = 10;
+                    this.player.y = 10;
+                    this.player.vitesseX = 0;
+                    this.player.vitesseY = 0;
+                }
             }
         });
     }
+
 }

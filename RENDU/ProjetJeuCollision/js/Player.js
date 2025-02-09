@@ -22,18 +22,6 @@ export default class Player extends ObjectGraphique {
         //recentre le monstre
         ctx.translate(-this.w / 2, -this.h / 2);
 
-        // cape rouge qui bouge
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        //definit la cape
-        ctx.moveTo(0, 25);
-        ctx.lineTo(50, 25);
-        //crée l'ondulation de la cape
-        ctx.lineTo(50 + Math.sin(this.temps) * 3, 70);
-        ctx.lineTo(0 + Math.sin(this.temps + 1) * 3, 70);
-        ctx.closePath();
-        ctx.fill();
-
         // tete du monstre
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, 50, 50);
@@ -55,9 +43,9 @@ export default class Player extends ObjectGraphique {
 
         //bras
         ctx.fillStyle = "black";
-        ctx.fillRect(40, 25, 25, 5);
+        ctx.fillRect(35, 25, 25, 5);
         ctx.fillStyle = "black";
-        ctx.fillRect(-15, 25, 20, 5);
+        ctx.fillRect(-10, 25, 20, 5);
 
     
         //cornes
@@ -78,5 +66,6 @@ export default class Player extends ObjectGraphique {
         this.x += this.vitesseX;
         this.y += this.vitesseY;
         this.temps += 0.1;
-    }
+    }   
+    
 }
